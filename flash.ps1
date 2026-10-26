@@ -33,14 +33,15 @@ if (-not $Port) {
         }
     } else {
         Write-Host "[ОЖИДАНИЕ] Подключите плату Arduino Uno по USB к компьютеру..." -ForegroundColor Yellow
-        for ($i = 0; $i -lt 30; $i++) {
-            Start-Sleep -Seconds 1
+        for ($i = 0; $i -lt 300; $i++) {
+            Start-Sleep -Seconds 2
             $ports = [System.IO.Ports.SerialPort]::GetPortNames()
             if ($ports.Count -gt 0) {
                 $Port = $ports[0]
                 Write-Host "`n[OK] Плата обнаружена на порту: $Port!" -ForegroundColor Green
                 break
             }
+            if ($i % 10 -eq 0) { Write-Host -NoNewline "`n[ОЖИДАНИЕ] Жду подключение платы: $Port" }
             Write-Host -NoNewline "."
         }
         if (-not $Port) {
